@@ -427,7 +427,7 @@ public:
         ++num_iter;
         if (num_iter <= recompute_mean)
         {
-            data_mean_cpu *= (num_iter - 1);
+            data_mean_cpu_resize *= (num_iter - 1);
             const int batch = inputs[0].size[0];
             float alpha = 1.0 / batch;
 
