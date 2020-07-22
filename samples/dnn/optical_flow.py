@@ -12,10 +12,10 @@ convert .h5 model to .caffemodel and modify original .prototxt using .prototxt f
 
 import argparse
 import os.path
-import numpy as np
-import cv2 as cv
 import tempfile
 from math import ceil
+import numpy as np
+import cv2 as cv
 
 
 class OpticalFlow(object):
@@ -65,7 +65,7 @@ if __name__ == '__main__':
                                      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('-input', '-i', required=True, help='Path to input video file. Skip this argument to capture frames from a camera.')
     parser.add_argument('--height', default=320, type=int, help='Input height')
-    parser.add_argument('--width',  default=448, type=int, help='Input width')
+    parser.add_argument('--width', default=448, type=int, help='Input width')
     parser.add_argument('--proto', '-p', default='FlowNet2_deploy_anysize.prototxt', help='Path to prototxt.')
     parser.add_argument('--model', '-m', default='FlowNet2_weights.caffemodel', help='Path to caffemodel.')
     args, _ = parser.parse_known_args()
@@ -88,11 +88,11 @@ if __name__ == '__main__':
     tmp = tempfile.NamedTemporaryFile(mode='w', delete=True)
     proto = open(args.proto).readlines()
     for line in proto:
-      for key, value in var.items():
-        tag = "$%s$" % key
-        line = line.replace(tag, str(value))
+        for key, value in var.items():
+            tag = "$%s$" % key
+            line = line.replace(tag, str(value))
 
-      tmp.write(line)
+        tmp.write(line)
     tmp.flush()
 
     opt_flow = OpticalFlow(tmp.name, args.model, var['ADAPTED_HEIGHT'], var['ADAPTED_WIDTH'])
