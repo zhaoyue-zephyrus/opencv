@@ -19,7 +19,6 @@ Implementation of Scale layer.
 #include <opencv2/imgproc.hpp>
 #include <opencv2/dnn/shape_utils.hpp>
 
-
 #ifdef HAVE_CUDA
 #include "../cuda4dnn/primitives/scale_shift.hpp"
 using namespace cv::dnn::cuda4dnn;
@@ -441,10 +440,10 @@ public:
             }
             data_mean_cpu_resize *= (1.0 / num_iter);
 
-            int newsize[] = {blobs[1].size[1], (int)blobs[1].total(2)};
+            int newsize[] = {inputs[0].size[1], (int)inputs[0].total(2)};
             reduce(data_mean_cpu_resize.reshape(1, 2, &newsize[0]), data_mean_per_channel_cpu, 1, REDUCE_SUM, CV_32F);
 
-            int area = blobs[1].total(2);
+            int area = inputs[0].total(2);
             data_mean_per_channel_cpu *= (1.0 / area);
         }
 
@@ -474,6 +473,7 @@ public:
                 Mat inpSlice(1, count, CV_32F, inpData);
                 Mat outSlice(1, count, CV_32F, outData);
                 float coeff = data_mean_per_channel_cpu.reshape(1, 1).at<float>(0, i);
+                std::cout << coeff;
                 outSlice = inpSlice - coeff;
 
                 inpData += count;
