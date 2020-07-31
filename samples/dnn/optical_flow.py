@@ -13,7 +13,6 @@ convert .h5 model to .caffemodel and modify original .prototxt using .prototxt f
 import argparse
 import os.path
 import tempfile
-from math import ceil
 import numpy as np
 import cv2 as cv
 
@@ -80,8 +79,8 @@ if __name__ == '__main__':
 
     divisor = 64.
     var = {}
-    var['ADAPTED_WIDTH'] = int(ceil(args.width/divisor) * divisor)
-    var['ADAPTED_HEIGHT'] = int(ceil(args.height/divisor) * divisor)
+    var['ADAPTED_WIDTH'] = int(np.ceil(args.width/divisor) * divisor)
+    var['ADAPTED_HEIGHT'] = int(np.ceil(args.height/divisor) * divisor)
     var['SCALE_WIDTH'] = args.width / float(var['ADAPTED_WIDTH'])
     var['SCALE_HEIGHT'] = args.height / float(var['ADAPTED_HEIGHT'])
 
