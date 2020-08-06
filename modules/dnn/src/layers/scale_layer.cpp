@@ -473,7 +473,6 @@ public:
                 Mat inpSlice(1, count, CV_32F, inpData);
                 Mat outSlice(1, count, CV_32F, outData);
                 float coeff = data_mean_per_channel_cpu.reshape(1, 1).at<float>(0, i);
-                std::cout << coeff;
                 outSlice = inpSlice - coeff;
 
                 inpData += count;
