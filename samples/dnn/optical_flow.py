@@ -12,7 +12,6 @@ convert .h5 model to .caffemodel and modify original .prototxt using .prototxt f
 
 import argparse
 import os.path
-import tempfile
 import numpy as np
 import cv2 as cv
 
