@@ -19,7 +19,7 @@ import cv2 as cv
 
 class OpticalFlow(object):
     def __init__(self, proto, model, height, width):
-        self.net = cv.dnn.readNet(proto, model)
+        self.net = cv.dnn.readNetFromCaffe(proto, model)
         self.net.setPreferableBackend(cv.dnn.DNN_BACKEND_OPENCV)
         self.height = height
         self.width = width
@@ -84,17 +84,17 @@ if __name__ == '__main__':
     var['SCALE_WIDTH'] = args.width / float(var['ADAPTED_WIDTH'])
     var['SCALE_HEIGHT'] = args.height / float(var['ADAPTED_HEIGHT'])
 
-    tmp = tempfile.NamedTemporaryFile(mode='w', delete=True)
+    config = ''
     proto = open(args.proto).readlines()
     for line in proto:
         for key, value in var.items():
             tag = "$%s$" % key
             line = line.replace(tag, str(value))
+        config += line
 
-        tmp.write(line)
-    tmp.flush()
+    caffemodel = open(args.model, 'rb').read()
 
-    opt_flow = OpticalFlow(tmp.name, args.model, var['ADAPTED_HEIGHT'], var['ADAPTED_WIDTH'])
+    opt_flow = OpticalFlow(bytearray(config.encode()), caffemodel, var['ADAPTED_HEIGHT'], var['ADAPTED_WIDTH'])
     while cv.waitKey(1) < 0:
         hasFrame, second_frame = cap.read()
         if not hasFrame:
